@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Clima</title>
+</head>
+<body>
+    <h1>Datos del Clima</h1>
+    <table border="1">
+        <tr>
+            <th>Ciudad</th>
+            <th>Fecha</th>
+            <th>Temperatura</th>
+            <th>Humedad</th>
+            <th>Descripción</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <td>{{ item.ciudad }}</td>
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.temperatura }}</td>
+            <td>{{ item.humedad }}</td>
+            <td>{{ item.descripcion }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from database import db
 import control
@@ -37,6 +37,19 @@ def ruta_temperatura(ciudad):
 def clima():
     data = control.obtener_datos_clima()
     return render_template('clima.html', data=data)
+
+
+@app.route('/consultar_clima', methods=['GET'])
+def consultar_clima():
+    return render_template('consultar_clima.html')
+
+@app.route('/mostrar_clima', methods=['POST'])
+def mostrar_clima():
+    ciudad = request.form['ciudad']
+    clima_actual = control.obtener_clima_actual(ciudad)
+    return render_template('mostrar_clima.html', clima=clima_actual, ciudad=ciudad)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

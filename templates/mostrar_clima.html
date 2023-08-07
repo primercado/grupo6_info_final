@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima en {{ ciudad }}</title>
+</head>
+<body>
+    <h1>Clima en {{ ciudad }}</h1>
+    <p>La temperatura de {{ ciudad }} es de {{ clima['current']['temp'] }}°C</p>
+    <p>El clima es {{ clima['current']['weather'][0]['description'] }}</p>
+</body>
+</html>

@@ -13,7 +13,7 @@ while True:
             user=os.environ.get('POSTGRES_USER'),
             password=os.environ.get('POSTGRES_PASSWORD')
         )
-        print ('Conexión Exitosa y la PUTA MADRE')
+        print ('Conexión Exitosa')
         break
     except psycopg2.OperationalError:
         print("Esperando por la database...")

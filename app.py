@@ -15,7 +15,7 @@ db.init_app(app)
 
 @app.route('/')
 def inicio():
-    return 'Bienvenido, a la API Clima pinche gato'
+    return 'Bienvenido, a la API Clima'
 
 
 @app.route('/clima/<string:ciudad>', methods=['GET'])

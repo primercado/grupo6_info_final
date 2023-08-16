@@ -1,205 +1,128 @@
 # Trabajo Práctico Final Análisis de Datos
 
-Grupo 6 : 
+## Integrantes Grupo 6 :
 
-Mercado, Isaac Pablo Rubén
-Melisa Marlen Benitez
-Juan Jose Juarez
-Ariel Solis
-Andrea Mellinger
-Juan Carlos Olmedo
-Melani Rodríguez
-Mauro Federico Rascón
-Miguel Adrian Holzer Egea
-Gastón Darío Pérez Parra
+- Mercado, Isaac Pablo Rubén
+- Melisa Marlen Benitez
+- Juan Jose Juarez
+- Ariel Solis
+- Andrea Mellinger
+- Juan Carlos Olmedo
+- Melani Rodríguez
+- Mauro Federico Rascón
+- Miguel Adrian Holzer Egea
+- Gastón Darío Pérez Parra
 
+## Descripción
 
-# Proyecto de Clima - Instrucciones
+La aplicación "API Clima" se encarga de proporcionar información climática de diferentes ciudades utilizando la API de OpenWeather. Esta información es almacenada en una base de datos PostgreSQL y es presentada a los usuarios a través de una API construida con Flask.
+Componentes
 
-** Ve al sitio web de OpenWeatherMap (https://openweathermap.org/) y regístrate para obtener una API KEY gratuita.
+1.  app.py:
 
+Este es el archivo principal que aloja las rutas del servidor web y la configuración de la aplicación Flask.
 
+```
+Rutas:
+    /: Mensaje de bienvenida.
+    /clima/<string:ciudad>: Devuelve el clima de una ciudad específica.
+    /ciudades: Obtiene todas las ciudades disponibles.
+    /temperatura/<string:ciudad>: Obtiene la temperatura promedio de una ciudad.
+    /clima: Renderiza una plantilla que muestra los datos del clima.
+    /consultar_clima: Renderiza una plantilla para consultar el clima.
+    /mostrar_clima: Renderiza el clima actual de una ciudad. 
+```
 
+2.  init.sql:
 
-## Nivel 1 
- 
-### Configuración de la API de OpenWeatherMap
+Script SQL para la creación de la tabla data_clima en la base de datos.
 
+3.  conect_db.py:
 
-1. Una vez que tengas tu API KEY, actualiza el valor de la variable api_key :
+Script de conexión a la base de datos y para insertar datos climáticos de un archivo CSV.
 
-  
-   api_key = 'tu_api_key_de_openweather'
+4.  extrac.py:
 
- 
+Obtiene datos del clima de la API de OpenWeather para diferentes ciudades y guarda estos datos en un archivo CSV.
 
+5.  control.py:
 
+Contiene funciones de ayuda para gestionar las peticiones a la base de datos y a la API de OpenWeather.
 
+6.  data_base.py:
 
-## Nivel Medio 
+Inicialización de SQLAlchemy para la gestión de la base de datos.
 
+7.  Dockerfile:
 
-### Configuración del Entorno Virtual
+Especificaciones para crear la imagen Docker de la aplicación.
 
-1. Primero, asegúrate de tener Python instalado en tu sistema.
-2. Abre una terminal o línea de comandos y ve al directorio raíz del proyecto.
-3. Crea un nuevo entorno virtual ejecutando el siguiente comando:
+8.  docker-compose.yml:
 
-   
-   python -m venv venv
-   
+Especificaciones para ejecutar la aplicación y la base de datos en contenedores Docker usando docker-compose.
 
-4. Activa el entorno virtual. En Windows, ejecuta:
+9.  requeriments.txt:
 
-   
-   venv\Scripts\activate
-   
+Lista de dependencias Python necesarias para ejecutar la aplicación.
 
-   En macOS y Linux, ejecuta:
+## Preparación:
 
-   
-   source venv/bin/activate
-   
+- **Configuración del entorno:** Asegúrate de tener Docker, Docker Compose y python instalados en tu máquina.
+    
+- Abre una terminal o línea de comandos y ve al directorio raíz del proyecto.
+    
+- Crea un nuevo entorno virtual ejecutando el siguiente comando:
+    
+    `python -m venv venv`
+    
+- Activa el entorno virtual. En Windows, ejecuta:
+    
+    `venv\Scripts\activate`
+    
+- En macOS y Linux, ejecuta:
+    
+    `source venv/bin/activate`
+    
+- **Instalación de Dependencias:** Una vez que el entorno virtual esté activado, instala las dependencias del proyecto desde el archivo requirements.txt. Ejecuta el siguiente comando:
+    
 
-### Instalación de Dependencias
+`pip install -r requirements.txt`
 
-Una vez que el entorno virtual esté activado, instala las dependencias del proyecto desde el archivo `requirements.txt`. Ejecuta el siguiente comando:
+- **Variables de Entorno:** Configura las variables de entorno en un archivo .env. Este archivo debe contener:
 
+```php-template
+POSTGRES_DB=<nombre de la base de datos>
+POSTGRES_USER=<nombre de usuario>
+POSTGRES_PASSWORD=<contraseña>
+SQLALCHEMY_DATABASE_URI=postgresql://<nombre de usuario>:<contraseña>@db:5432/<nombre de la base de datos>
+```
 
-pip install -r requirements.txt
+- **Ejecución de extrac.py:** Antes de ejecutar la aplicación, debes correr el archivo extrac.py. Esto es necesario para extraer los datos climáticos y guardarlos en la base de datos.
+- Dirigirse a la raíz del proyecto `app/` y ejecuta:
+    
+    `python extrac.py`
+    
 
+## Instrucciones de Despliegue
 
-### Configuración de la Base de Datos
+1.  **Construir y levantar los contenedores:** Dirígite al directorio app/ y ejecuta:
 
-1. Asegúrate de tener una base de datos creada en PostgreSQL donde se almacenarán los datos del clima. 
+En Windows:
 
-2. Abre el archivo `config.py` y actualiza los siguientes valores con los datos de tu base de datos:
+```
+docker-compose up --build
+docker-compose down
+docker-compose up 
+```
 
- # Configuración de la conexión a la base de datos PostgreSQL
- 
-   
-   DB_USER = 'tu_usuario'
-   DB_PASSWORD = 'tu_contraseña'
-   DB_HOST = 'localhost'  # Cambia esto si tu base de datos está en otro host
-   DB_PORT = '5432'  # Cambia esto si estás usando otro puerto
-   DB_NAME = 'nombre_de_tu_base_de_datos'
-   
+En Linux:
 
-3. Ejecuta el siguiente comando para crear las tablas en la base de datos:
+```
+sudo docker-compose up --build
+sudo docker compose down
+sudo docker compose up 
+```
 
-   
-   python create_tables.py
-   
+2.  La aplicación estará disponible en http://localhost:5000/.
 
-### Configuración de la API de OpenWeatherMap
 
-
-1. Una vez que tengas tu API KEY, abre el archivo `config.py` nuevamente y actualiza el siguiente valor:
-
-  
-   API_KEY = 'tu_api_key_de_openweather'
-   
-
-### Puesta en marcha del Proyecto
-
-¡El proyecto está listo para funcionar!
-
-1. Asegúrate de que tu base de datos esté creada y las tablas estén creadas utilizando `create_tables.py`.
-
-2. Ejecuta el siguiente comando para iniciar el programa:
-
-   
-   python main.py
-
-
-Con esto, el programa descargará los datos del clima de los últimos 5 días de diferentes ciudades desde OpenWeatherMap, los procesará y los almacenará en la base de datos que has configurado.
-
-
-
-
-
-
-
-
-
-
-## Nivel Avanzado
-
-### Configuración del Entorno Virtual
-
-1. Primero, asegúrate de tener Python instalado en tu sistema.
-2. Abre una terminal o línea de comandos y ve al directorio raíz del proyecto.
-3. Crea un nuevo entorno virtual ejecutando el siguiente comando:
-
-   
-   python -m venv venv
-   
-
-4. Activa el entorno virtual. En Windows, ejecuta:
-
-   
-   venv\Scripts\activate
-   
-
-   En macOS y Linux, ejecuta:
-
-   
-   source venv/bin/activate
-   
-
-### Instalación de Dependencias
-
-Una vez que el entorno virtual esté activado, instala las dependencias del proyecto desde el archivo `requirements.txt`. Ejecuta el siguiente comando:
-
-
-pip install -r requirements.txt
-
-
-### Crear archivo .env
-1. Asegúrate de tener una base de datos creada en PostgreSQL donde se almacenarán los datos del clima. 
-
-2. Crea el archivo `.env` y actualiza los siguientes valores con los datos de tu base de datos:
-
-    POSTGRES_USER= usuario
-    POSTGRES_PASSWORD= password
-    POSTGRES_DB= nombre_base_datos
-    SQLALCHEMY_DATABASE_URI=postgresql://usuario:password@db:5432/nombre_base_datos
-
-
-    Guarde y cierre el archivo .env.
-   
-
-### Configuración de la API de OpenWeatherMap
-
-
-1. Una vez que tengas tu API KEY, abre el archivo `control.py` nuevamente y actualiza el siguiente valor:
-
-  
-   API_KEY = 'tu_api_key_de_openweather'
-   
-### Ejecutar archivo extrac.py
-
-    1. Ejecuta el archivo [extrac.py](extrac.py) dentro de la carpeta principal.
-    2. Espera que la ejecucion termine.
-
-### Construir y levantar la aplicación con Docker Compose:
-    1. Dirígite al directorio app/ y ejecuta:
-        Win:
-        docker-compose up --build
-        docker-compose down
-        docker-compose up
-        Linux:
-        sudo docker-compose up --build
-        sudo docker compose down
-        sudo docker compose up
-        
-
-        Nota: La opción --build se utiliza para construir las imágenes antes de iniciar los contenedores. Solo es necesario hacerlo la primera vez que se inicia la aplicación o cuando se han realizado cambios en el código.
-### Puesta en marcha del Proyecto
-
-¡El proyecto está listo para funcionar!
-
-Puedes acceder a la interfaz web haciendo Ctrl+Click Izq. sobre la direccion del localhost:  http://127.0.0.1:5000
-Con la direccion http://127.0.0.1:5000/clima se peude visualizar el clima de todas las ciudades mencionadas los ultimos 5 dias.
-
-y con http://127.0.0.1:5000/consultar_clima se puede consultar como esta el clima de cualquier ciudad en el momento actual.
